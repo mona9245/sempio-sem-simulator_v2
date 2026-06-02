@@ -18,10 +18,8 @@ export const SECTIONS = [
       { kw: 'gochujang recipe', vol: 5000, comp: 'low', cpcKRW: 31 },
       { kw: 'korean bbq recipe', vol: 5000, comp: 'low', cpcKRW: 35 },
       { kw: 'korean glass noodles recipe', vol: 5000, comp: 'low', cpcKRW: 27 },
-      { kw: 'doenjang jjigae recipe', vol: 5000, comp: 'low', cpcKRW: null },
-      { kw: 'jjajangmyeon recipe', vol: 5000, comp: 'low', cpcKRW: null },
+
       { kw: 'instant tteokbokki', vol: 5000, comp: 'high', cpcKRW: 186 },
-      { kw: 'cup japchae', vol: null, comp: null, cpcKRW: null },
     ],
   },
   {
@@ -42,9 +40,7 @@ export const SECTIONS = [
       { kw: 'kimchi brand', vol: 5000, comp: 'high', cpcKRW: 392 },
       { kw: 'tteokbokki sauce', vol: 5000, comp: 'low', cpcKRW: 329 },
       { kw: 'best soy sauce brand', vol: 5000, comp: 'mid', cpcKRW: 107 },
-      { kw: 'best kimchi brand usa', vol: null, comp: null, cpcKRW: null },
-      { kw: 'korean pantry essentials', vol: 50, comp: 'low', cpcKRW: null },
-      { kw: 'korean cooking ingredients', vol: 50, comp: 'low', cpcKRW: null },
+
     ],
   },
   {
@@ -63,11 +59,7 @@ export const SECTIONS = [
       { kw: 'organic gochujang', vol: 500, comp: 'high', cpcKRW: 513 },
       { kw: 'vegan gochujang', vol: 500, comp: 'low', cpcKRW: 240 },
       { kw: 'non gmo soy sauce', vol: 500, comp: 'low', cpcKRW: 319 },
-      { kw: 'halal soy sauce', vol: 500, comp: 'mid', cpcKRW: null },
-      { kw: 'plant based umami sauce', vol: 500, comp: 'low', cpcKRW: null },
-      { kw: 'allergen free soy sauce', vol: 50, comp: 'high', cpcKRW: null },
-      { kw: 'vegan doenjang', vol: 50, comp: 'low', cpcKRW: null },
-      { kw: 'clean label kimchi', vol: null, comp: null, cpcKRW: null },
+
     ],
   },
   {
@@ -81,13 +73,11 @@ export const SECTIONS = [
       { kw: 'tamari sauce', vol: 50000, comp: 'high', cpcKRW: 23 },
       { kw: 'gochujang paste', vol: 50000, comp: 'high', cpcKRW: 75 },
       { kw: 'japchae noodles', vol: 50000, comp: 'mid', cpcKRW: 44 },
-      { kw: 'miso substitute', vol: 5000, comp: 'low', cpcKRW: null },
       { kw: 'umami seasoning', vol: 5000, comp: 'high', cpcKRW: 171 },
       { kw: 'coconut aminos alternative', vol: 5000, comp: 'low', cpcKRW: 63 },
       { kw: 'soy sauce substitute gluten free', vol: 5000, comp: 'mid', cpcKRW: 37 },
       { kw: 'fish sauce substitute vegan', vol: 5000, comp: 'low', cpcKRW: 30 },
-      { kw: 'liquid aminos alternative', vol: 50, comp: 'low', cpcKRW: null },
-      { kw: 'umami sauce substitute', vol: 50, comp: 'mid', cpcKRW: null },
+
     ],
   },
   {
@@ -103,8 +93,7 @@ export const SECTIONS = [
       { kw: 'sempio soy sauce', vol: 500, comp: 'high', cpcKRW: 546 },
       { kw: 'sempio gochujang', vol: 500, comp: 'mid', cpcKRW: 314 },
       { kw: 'yondu umami sauce', vol: 50, comp: 'high', cpcKRW: 367 },
-      { kw: 'sempio kimchi', vol: 50, comp: 'mid', cpcKRW: null },
-      { kw: 'yondu organic', vol: null, comp: null, cpcKRW: null },
+
     ],
   },
 ];
