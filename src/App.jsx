@@ -140,6 +140,7 @@ export default function App() {
                 {isExpanded && (
                   <div className="kw-table">
                     <div className="kw-head">
+                      <span></span>
                       <span>Keyword</span>
                       <span>Monthly vol.</span>
                       <span>Competition</span>
