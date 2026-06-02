@@ -88,6 +88,16 @@ export default function App() {
           </div>
         </section>
 
+        <section className="summary-banner">
+          {result.totalKw === 0 ? (
+            <span>예산을 설정하면 커버 가능한 키워드가 표시됩니다.</span>
+          ) : result.totalKw === 40 ? (
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 전체 <strong>40개</strong> 키워드를 모두 커버할 수 있습니다.</span>
+          ) : (
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 총 40개 키워드 중 <strong>{result.totalKw}개</strong>를 커버할 수 있습니다. 전체 커버를 위해서는 <strong>{fmtUSD(totalMaxBudget())}</strong> <span className="krw">({fmtKRW(totalMaxBudget())})</span>이 필요합니다.</span>
+          )}
+        </section>
+
         <section className="stat-cards">
           <div className="stat-card">
             <div className="stat-label">Monthly budget</div>
@@ -149,7 +159,7 @@ export default function App() {
                     </div>
                     {section.kwRows.map(({ kw, needed, active }) => (
                       <div key={kw.kw} className={`kw-row ${active ? 'kw-active' : 'kw-inactive'}`}>
-                        <span className="kw-dot" style={{ background: active ? section.color : '#333' }} />
+                        <span className="kw-dot" style={{ background: active ? section.color : '#ccc' }} />
                         <span className="kw-name">{kw.kw}</span>
                         <span className="kw-vol">{kw.vol ? kw.vol.toLocaleString() : '—'}</span>
                         <span className="kw-comp">
@@ -162,7 +172,7 @@ export default function App() {
                         <span className="kw-cpc">
                           {kw.cpcKRW ? '$' + (kw.cpcKRW / FX).toFixed(2) : '—'}
                         </span>
-                        <span className="kw-budget" style={{ color: active ? section.color : '#444' }}>
+                        <span className="kw-budget" style={{ color: active ? section.color : '#bbb' }}>
                           {needed !== null ? (
                             <>
                               <span>{fmtUSD(needed)}</span>
@@ -182,7 +192,7 @@ export default function App() {
         </section>
 
         <footer className="app-footer">
-          Search volume: Google Ads Keyword Planner (range midpoint applied) · CPC: top-of-page bid low range ÷ 1,370 · Exchange rate $1 = ₩1,370 · Monthly budget = vol × CTR 2% × CPC · Broad match basis
+          검색량: Google Ads 키워드 플래너 (범위 중간값 적용) · CPC: 페이지 상단 입찰가 최저/최고 평균 · 환율 $1 = ₩1,370 · 월 예산 = 검색량 × CTR 2% × CPC · Broad match 기준
         </footer>
       </main>
     </div>
