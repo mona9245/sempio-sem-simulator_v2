@@ -15,7 +15,9 @@ const COMP_MAP = {
 
 export default function App() {
   const [budget, setBudget] = useState(1000);
-  const [expanded, setExpanded] = useState({});
+  const [expanded, setExpanded] = useState(
+    Object.fromEntries(SECTIONS.map(s => [s.id, true]))
+  );
 
   const result = useMemo(() => {
     let remaining = budget;
