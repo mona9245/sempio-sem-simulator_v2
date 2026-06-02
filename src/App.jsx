@@ -160,7 +160,7 @@ export default function App() {
                           ) : '—'}
                         </span>
                         <span className="kw-cpc">
-                          {kw.cpcKRW ? fmtUSD(kw.cpcKRW / FX) : '—'}
+                          {kw.cpcKRW ? '$' + (kw.cpcKRW / FX).toFixed(2) : '—'}
                         </span>
                         <span className="kw-budget" style={{ color: active ? section.color : '#444' }}>
                           {needed !== null ? (
