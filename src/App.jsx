@@ -87,7 +87,8 @@ export default function App() {
             <span>{fmtUSD(MAX_BUDGET)} — full coverage</span>
           </div>
         </section>
-
+        <section className="summary-banner">
+          <p className="banner-desc">현재 키워드는 미국 Google Ads 키워드 플래너 기준으로 선정되었으며, CPC는 페이지 상단 입찰가 최저/최고의 평균값을 적용하였습니다.</p>
         <section className="summary-banner">
           {result.totalKw === 0 ? (
             <span>예산을 설정하면 커버 가능한 키워드가 표시됩니다.</span>
