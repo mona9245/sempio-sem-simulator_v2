@@ -48,6 +48,7 @@ export default function App() {
   }, [budget]);
 
   const pct = Math.min(100, (budget / MAX_BUDGET) * 100);
+  const totalKws = SECTIONS.flatMap(s => s.keywords).length;
 
   return (
     <div className="app">
@@ -87,15 +88,15 @@ export default function App() {
             <span>{fmtUSD(MAX_BUDGET)} — full coverage</span>
           </div>
         </section>
+
         <section className="summary-banner">
           <p className="banner-desc">현재 키워드는 미국 Google Ads 키워드 플래너 기준으로 선정되었으며, CPC는 페이지 상단 입찰가 최저/최고의 평균값을 적용하였습니다.</p>
-        <section className="summary-banner">
           {result.totalKw === 0 ? (
             <span>예산을 설정하면 커버 가능한 키워드가 표시됩니다.</span>
-          ) : result.totalKw === 40 ? (
-            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 전체 <strong>40개</strong> 키워드를 모두 커버할 수 있습니다.</span>
+          ) : result.totalKw === totalKws ? (
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 전체 <strong>{totalKws}개</strong> 키워드를 모두 커버할 수 있습니다.</span>
           ) : (
-            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 총 40개 키워드 중 <strong>{result.totalKw}개</strong>를 커버할 수 있습니다. 전체 커버를 위해서는 <strong>{fmtUSD(totalMaxBudget())}</strong> <span className="krw">({fmtKRW(totalMaxBudget())})</span>이 필요합니다.</span>
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 총 {totalKws}개 키워드 중 <strong>{result.totalKw}개</strong>를 커버할 수 있습니다. 전체 커버를 위해서는 <strong>{fmtUSD(totalMaxBudget())}</strong> <span className="krw">({fmtKRW(totalMaxBudget())})</span>이 필요합니다.</span>
           )}
         </section>
 
@@ -108,7 +109,7 @@ export default function App() {
           <div className="stat-card">
             <div className="stat-label">Keywords covered</div>
             <div className="stat-val">{result.totalKw}</div>
-            <div className="stat-sub">of 40 with data</div>
+            <div className="stat-sub">of {totalKws} keywords</div>
           </div>
           <div className="stat-card">
             <div className="stat-label">Est. impressions</div>
@@ -134,7 +135,6 @@ export default function App() {
               <div key={section.id} className={`section ${coverageNone ? 'section-dim' : ''}`}>
                 <button
                   className="section-header"
-                  style={{ '--sec-color': section.color, '--sec-bg': section.bgColor }}
                   onClick={() => setExpanded(e => ({ ...e, [section.id]: !isExpanded }))}
                 >
                   <span className="sec-dot" style={{ background: section.color }} />
