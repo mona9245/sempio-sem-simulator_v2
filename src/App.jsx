@@ -15,9 +15,7 @@ const COMP_MAP = {
 
 export default function App() {
   const [budget, setBudget] = useState(1000);
-  const [expanded, setExpanded] = useState(
-    Object.fromEntries(SECTIONS.map(s => [s.id, true]))
-  );
+  const [activeSection, setActiveSection] = useState('discovery');
 
   const result = useMemo(() => {
     let remaining = budget;
@@ -49,6 +47,7 @@ export default function App() {
 
   const pct = Math.min(100, (budget / MAX_BUDGET) * 100);
   const totalKws = SECTIONS.flatMap(s => s.keywords).length;
+  const activeData = result.computed.find(s => s.id === activeSection);
 
   return (
     <div className="app">
@@ -123,49 +122,73 @@ export default function App() {
           </div>
         </section>
 
-        <section className="sections-list">
-          {result.computed.map(section => {
-            const isExpanded = expanded[section.id] !== false;
-            const coverageAll = section.secActive === section.dataKws;
-            const coverageNone = section.secActive === 0;
-            const coverageLabel = coverageNone ? 'No budget' : coverageAll ? 'Full coverage' : `${section.secActive} / ${section.dataKws}`;
-            const coverageCls = coverageNone ? 'cov-none' : coverageAll ? 'cov-full' : 'cov-partial';
-
-            return (
-              <div key={section.id} className={`section ${coverageNone ? 'section-dim' : ''}`}>
+        <div className="section-layout">
+          <div className="section-tabs">
+            {result.computed.map(section => {
+              const coverageAll = section.secActive === section.dataKws;
+              const coverageNone = section.secActive === 0;
+              const coverageCls = coverageNone ? 'cov-none' : coverageAll ? 'cov-full' : 'cov-partial';
+              const coverageLabel = coverageNone ? 'No budget' : coverageAll ? 'Full' : `${section.secActive}/${section.dataKws}`;
+              return (
                 <button
-                  className="section-header"
-                  onClick={() => setExpanded(e => ({ ...e, [section.id]: !isExpanded }))}
+                  key={section.id}
+                  className={`section-tab ${activeSection === section.id ? 'tab-active' : ''} ${coverageNone ? 'tab-dim' : ''}`}
+                  onClick={() => setActiveSection(section.id)}
                 >
-                  <span className="sec-dot" style={{ background: section.color }} />
-                  <span className="sec-name">{section.name}</span>
-                  <span className="sec-sub">{section.sub}</span>
-                  <span className="sec-budget">
-                    <span>{fmtUSD(section.secBudget)}</span>
-                    <span className="sec-budget-krw">{fmtKRW(section.secBudget)}</span>
-                  </span>
-                  <span className={`coverage ${coverageCls}`}>{coverageLabel}</span>
-                  <span className={`chevron ${isExpanded ? 'open' : ''}`}>›</span>
-                </button>
-
-                {isExpanded && (
-                  <div className="kw-tags-wrap">
-                    {section.kwRows.map(({ kw, needed, active }) => (
-                      <div key={kw.kw} className={`kw-tag ${active ? 'kw-tag-active' : 'kw-tag-inactive'}`}>
-                        <span className="kw-tag-dot" style={{ background: active ? section.color : '#ccc' }} />
-                        <span className="kw-tag-name">{kw.kw}</span>
-                        <span className="kw-tag-meta">
-                          {kw.vol ? kw.vol.toLocaleString() : '-'} · {kw.cpcKRW ? '$' + (kw.cpcKRW / FX).toFixed(2) : '-'}
-                          {needed !== null && <span className="kw-tag-budget" style={{ color: active ? section.color : '#ccc' }}> · {fmtUSD(needed)}</span>}
-                        </span>
-                      </div>
-                    ))}
+                  <span className="tab-dot" style={{ background: section.color }} />
+                  <span className="tab-name">{section.name}</span>
+                  <span className="tab-sub">{section.sub}</span>
+                  <div className="tab-footer">
+                    <span className="tab-budget">{fmtUSD(section.secBudget)} <span className="tab-budget-krw">{fmtKRW(section.secBudget)}</span></span>
+                    <span className={`coverage ${coverageCls}`}>{coverageLabel}</span>
                   </div>
-                )}
+                </button>
+              );
+            })}
+          </div>
+
+          {activeData && (
+            <div className="section-detail">
+              <div className="kw-table">
+                <div className="kw-head">
+                  <span></span>
+                  <span>Keyword</span>
+                  <span>Monthly vol.</span>
+                  <span>Competition</span>
+                  <span>CPC</span>
+                  <span>Monthly budget</span>
+                </div>
+                {activeData.kwRows.map(({ kw, needed, active }) => (
+                  <div key={kw.kw} className={`kw-row ${active ? 'kw-active' : 'kw-inactive'}`}>
+                    <span className="kw-dot" style={{ background: active ? activeData.color : '#ccc' }} />
+                    <span className="kw-name">{kw.kw}</span>
+                    <span className="kw-vol">{kw.vol ? kw.vol.toLocaleString() : '-'}</span>
+                    <span className="kw-comp">
+                      {kw.comp ? (
+                        <span className={`comp-pill ${COMP_MAP[kw.comp].cls}`}>
+                          {COMP_MAP[kw.comp].label}
+                        </span>
+                      ) : '-'}
+                    </span>
+                    <span className="kw-cpc">
+                      {kw.cpcKRW ? '$' + (kw.cpcKRW / FX).toFixed(2) : '-'}
+                    </span>
+                    <span className="kw-budget" style={{ color: active ? activeData.color : '#bbb' }}>
+                      {needed !== null ? (
+                        <>
+                          <span>{fmtUSD(needed)}</span>
+                          <span className="kw-budget-krw">{fmtKRW(needed)}</span>
+                        </>
+                      ) : (
+                        <span className="no-data">No data</span>
+                      )}
+                    </span>
+                  </div>
+                ))}
               </div>
-            );
-          })}
-        </section>
+            </div>
+          )}
+        </div>
 
         <footer className="app-footer">
           검색량: Google Ads 키워드 플래너 (범위 중간값 적용) · CPC: 페이지 상단 입찰가 최저/최고 평균 · 환율 $1 = ₩1,370 · 월 예산 = 검색량 × CTR 2% × CPC · Broad match 기준
