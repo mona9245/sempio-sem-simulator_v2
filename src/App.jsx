@@ -88,6 +88,16 @@ export default function App() {
           </div>
         </section>
 
+        <section className="summary-banner">
+          {result.totalKw === 0 ? (
+            <span>예산을 설정하면 커버 가능한 키워드가 표시됩니다.</span>
+          ) : result.totalKw === 40 ? (
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 전체 <strong>40개</strong> 키워드를 모두 커버할 수 있습니다.</span>
+          ) : (
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 총 40개 키워드 중 <strong>{result.totalKw}개</strong>를 커버할 수 있습니다. 전체 커버를 위해서는 <strong>{fmtUSD(totalMaxBudget())}</strong> <span className="krw">({fmtKRW(totalMaxBudget())})</span>이 필요합니다.</span>
+          )}
+        </section>
+
         <section className="stat-cards">
           <div className="stat-card">
             <div className="stat-label">Monthly budget</div>
