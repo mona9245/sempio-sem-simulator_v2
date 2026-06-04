@@ -192,6 +192,7 @@ export default function App() {
 
         <footer className="app-footer">
           검색량: Google Ads 키워드 플래너 (범위 중간값 적용) · CPC: 페이지 상단 입찰가 최저/최고 평균 · 환율 $1 = ₩1,370 · 월 예산 = 검색량 × CTR 2% × CPC · Broad match 기준
+          <div className="footer-copyright">© bitree. All rights reserved.</div>
         </footer>
       </main>
     </div>

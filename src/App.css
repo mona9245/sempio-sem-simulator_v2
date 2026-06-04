@@ -382,6 +382,11 @@ body {
   border-top: 1px solid var(--border);
   padding-top: 20px;
 }
+.footer-copyright {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text3);
+}
 
 @media (max-width: 640px) {
   .stat-cards { grid-template-columns: repeat(2, 1fr); }
