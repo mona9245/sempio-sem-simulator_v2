@@ -39,6 +39,12 @@ body {
   justify-content: space-between;
 }
 .brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo { height: 24px; width: auto; }
+.brand-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border2);
+}
 .brand-tag {
   font-family: var(--mono);
   font-size: 11px;

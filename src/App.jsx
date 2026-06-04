@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { SECTIONS, FX, estimateBudgetUSD, estimateImpression, totalMaxBudget } from './data';
+import bitreeLogo from './assets/bitree_logo.png';
 import './App.css';
 
 const MAX_BUDGET = totalMaxBudget() + 200;
@@ -54,6 +55,8 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <div className="brand">
+            <img src={bitreeLogo} alt="Bitree" className="brand-logo" />
+            <span className="brand-divider" />
             <span className="brand-tag">SEM</span>
             <span className="brand-title">Budget Simulator</span>
           </div>
