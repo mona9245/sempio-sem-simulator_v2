@@ -48,6 +48,7 @@ export default function App() {
   }, [budget]);
 
   const pct = Math.min(100, (budget / MAX_BUDGET) * 100);
+  const totalKws = SECTIONS.flatMap(s => s.keywords).length;
 
   return (
     <div className="app">
@@ -89,12 +90,13 @@ export default function App() {
         </section>
 
         <section className="summary-banner">
+          <p className="banner-desc">현재 키워드는 미국 Google Ads 키워드 플래너 기준으로 선정되었으며, CPC는 페이지 상단 입찰가 최저/최고의 평균값을 적용하였습니다.</p>
           {result.totalKw === 0 ? (
             <span>예산을 설정하면 커버 가능한 키워드가 표시됩니다.</span>
-          ) : result.totalKw === 40 ? (
-            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 전체 <strong>40개</strong> 키워드를 모두 커버할 수 있습니다.</span>
+          ) : result.totalKw === totalKws ? (
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 전체 <strong>{totalKws}개</strong> 키워드를 모두 커버할 수 있습니다.</span>
           ) : (
-            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 총 40개 키워드 중 <strong>{result.totalKw}개</strong>를 커버할 수 있습니다. 전체 커버를 위해서는 <strong>{fmtUSD(totalMaxBudget())}</strong> <span className="krw">({fmtKRW(totalMaxBudget())})</span>이 필요합니다.</span>
+            <span>월 <strong>{fmtUSD(budget)}</strong> <span className="krw">({fmtKRW(budget)})</span> 예산으로 총 {totalKws}개 키워드 중 <strong>{result.totalKw}개</strong>를 커버할 수 있습니다. 전체 커버를 위해서는 <strong>{fmtUSD(totalMaxBudget())}</strong> <span className="krw">({fmtKRW(totalMaxBudget())})</span>이 필요합니다.</span>
           )}
         </section>
 
@@ -107,7 +109,7 @@ export default function App() {
           <div className="stat-card">
             <div className="stat-label">Keywords covered</div>
             <div className="stat-val">{result.totalKw}</div>
-            <div className="stat-sub">of 40 with data</div>
+            <div className="stat-sub">of {totalKws} keywords</div>
           </div>
           <div className="stat-card">
             <div className="stat-label">Est. impressions</div>
@@ -133,7 +135,6 @@ export default function App() {
               <div key={section.id} className={`section ${coverageNone ? 'section-dim' : ''}`}>
                 <button
                   className="section-header"
-                  style={{ '--sec-color': section.color, '--sec-bg': section.bgColor }}
                   onClick={() => setExpanded(e => ({ ...e, [section.id]: !isExpanded }))}
                 >
                   <span className="sec-dot" style={{ background: section.color }} />
@@ -148,39 +149,14 @@ export default function App() {
                 </button>
 
                 {isExpanded && (
-                  <div className="kw-table">
-                    <div className="kw-head">
-                      <span></span>
-                      <span>Keyword</span>
-                      <span>Monthly vol.</span>
-                      <span>Competition</span>
-                      <span>CPC</span>
-                      <span>Monthly budget</span>
-                    </div>
+                  <div className="kw-tags-wrap">
                     {section.kwRows.map(({ kw, needed, active }) => (
-                      <div key={kw.kw} className={`kw-row ${active ? 'kw-active' : 'kw-inactive'}`}>
-                        <span className="kw-dot" style={{ background: active ? section.color : '#333' }} />
-                        <span className="kw-name">{kw.kw}</span>
-                        <span className="kw-vol">{kw.vol ? kw.vol.toLocaleString() : '—'}</span>
-                        <span className="kw-comp">
-                          {kw.comp ? (
-                            <span className={`comp-pill ${COMP_MAP[kw.comp].cls}`}>
-                              {COMP_MAP[kw.comp].label}
-                            </span>
-                          ) : '—'}
-                        </span>
-                        <span className="kw-cpc">
-                          {kw.cpcKRW ? '$' + (kw.cpcKRW / FX).toFixed(2) : '—'}
-                        </span>
-                        <span className="kw-budget" style={{ color: active ? section.color : '#444' }}>
-                          {needed !== null ? (
-                            <>
-                              <span>{fmtUSD(needed)}</span>
-                              <span className="kw-budget-krw">{fmtKRW(needed)}</span>
-                            </>
-                          ) : (
-                            <span className="no-data">No data</span>
-                          )}
+                      <div key={kw.kw} className={`kw-tag ${active ? 'kw-tag-active' : 'kw-tag-inactive'}`}>
+                        <span className="kw-tag-dot" style={{ background: active ? section.color : '#ccc' }} />
+                        <span className="kw-tag-name">{kw.kw}</span>
+                        <span className="kw-tag-meta">
+                          {kw.vol ? kw.vol.toLocaleString() : '-'} · {kw.cpcKRW ? '$' + (kw.cpcKRW / FX).toFixed(2) : '-'}
+                          {needed !== null && <span className="kw-tag-budget" style={{ color: active ? section.color : '#ccc' }}> · {fmtUSD(needed)}</span>}
                         </span>
                       </div>
                     ))}
@@ -192,7 +168,7 @@ export default function App() {
         </section>
 
         <footer className="app-footer">
-          Search volume: Google Ads Keyword Planner (range midpoint applied) · CPC: top-of-page bid low range ÷ 1,370 · Exchange rate $1 = ₩1,370 · Monthly budget = vol × CTR 2% × CPC · Broad match basis
+          검색량: Google Ads 키워드 플래너 (범위 중간값 적용) · CPC: 페이지 상단 입찰가 최저/최고 평균 · 환율 $1 = ₩1,370 · 월 예산 = 검색량 × CTR 2% × CPC · Broad match 기준
         </footer>
       </main>
     </div>
